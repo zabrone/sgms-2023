@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Branch;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -19,7 +21,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $branches = Branch::all();
+        return view('users.create', ['branches' => $branches]);
     }
 
     /**
