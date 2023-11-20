@@ -31,12 +31,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     //users routes
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-    Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
+    Route::resource('users', UserController::class);
 
     //branches routes
-    Route::get('/branches', [BranchController::class, 'index'])->name('branches.index');
+    Route::resource('branches', BranchController::class);
 
     //announcements routes
     Route::get('/announcements', [AnnouncementController::class, 'index'])->name('announcements.index');

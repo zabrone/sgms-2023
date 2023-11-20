@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Branch extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'branch_name',
+        'location',
+        // Add other attributes as needed
+    ];
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Branch;
 use Illuminate\Http\Request;
 
 class BranchController extends Controller
@@ -11,7 +12,8 @@ class BranchController extends Controller
      */
     public function index()
     {
-        return view('branches.index');
+        $branches = Branch::all();
+        return view('branches.index', compact('branches'));
     }
 
     /**
@@ -19,15 +21,22 @@ class BranchController extends Controller
      */
     public function create()
     {
-        //
+        return view('branches.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        // Validation rules
+        $validatedData = $request->validate([
+            'branch_name' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+        ]);
+
+        // Create branch
+        $branch = Branch::create($validatedData);
+
+        // Redirect to branches.index or wherever you want
+        return redirect()->route('branches.index')->with('success', 'Branch created successfully!');
     }
 
     /**

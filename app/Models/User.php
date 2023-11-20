@@ -11,19 +11,21 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasRoles, HasApiTokens, HasFactory, Notifiable;
+    use /* HasRoles, */ HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
+
     protected $fillable = [
         'name',
         'email',
         'password',
         'phone',
         'level',
+        'image',
     ];
 
     /**
@@ -45,4 +47,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
 }

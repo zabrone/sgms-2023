@@ -13,7 +13,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('users.index');
+        $users = User::with('branch')->get();
+        return view('users.index', ['users' => $users]);
     }
 
     /**
@@ -30,8 +31,32 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validation rules
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users|max:255',
+            'password' => 'required|string|min:8|confirmed',
+            'phone' => 'required|string|max:20',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'level' => 'required|in:admin,supervisor,guard',
+            /* 'branch_id' => null, */
+        ]);
+
+        // Handle file upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $imageName);
+            $validatedData['image'] = $imageName;
+        }
+
+        // Create user
+        $user = User::create($validatedData);
+
+        // Redirect to users.index or wherever you want
+        return response($user);
     }
+
 
     /**
      * Display the specified resource.
